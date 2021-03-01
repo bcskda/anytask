@@ -1,5 +1,9 @@
 # Django settings for anytask project.
 
+##########################################
+# Remove after passing Github Actions CI #
+##########################################
+
 from settings_common import *  # NOQA
 import os
 
