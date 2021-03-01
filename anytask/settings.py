@@ -1,8 +1,8 @@
 # Django settings for anytask project.
 
-#######################
-# REMOVE THIS COMMENT #
-#######################
+#########################
+# REMOVE THIS COMMENT 2 #
+#########################
 from settings_common import *
 import os
 
