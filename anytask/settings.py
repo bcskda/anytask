@@ -1,9 +1,6 @@
 # Django settings for anytask project.
 
-#########################
-# REMOVE THIS COMMENT 2 #
-#########################
-from settings_common import *
+from settings_common import *  # NOQA
 import os
 
 DEBUG = True
