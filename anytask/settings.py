@@ -2,6 +2,7 @@
 
 ##########################################
 # Remove after passing Github Actions CI #
+# Bump 4                                 #
 ##########################################
 
 from settings_common import *  # NOQA
