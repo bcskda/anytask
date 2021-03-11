@@ -109,13 +109,18 @@ def contest_rejudge(issue):
             filename, extension = os.path.splitext(file_copy.file.name)
             if ext == extension or ext == '.*':
                 anyrb = AnyRB(event)
-                review_request_id = anyrb.upload_review()
-                if review_request_id is not None:
-                    event.value += u'<p><a href="{1}/r/{0}">Review request {0}</a></p>'. \
-                        format(review_request_id, settings.RB_API_URL)
+                try:
+                    review_request_id = anyrb.upload_review()
+                except UnicodeDecodeError:
+                    event.value['comment'] += u'<p>{0}</p>'.format(_(u'plohaya_kodirovka'))
+                    event.followers.add(User.objects.get(username='anytask.monitoring'))
                 else:
-                    event.value += u'<p>{0}.</p>'.format(_(u'oshibka_otpravki_v_rb'))
-                    issue.followers.add(User.objects.get(username='anytask.monitoring'))
+                    if review_request_id is not None:
+                        event.value += u'<p><a href="{1}/r/{0}">Review request {0}</a></p>'. \
+                            format(review_request_id, settings.RB_API_URL)
+                    else:
+                        event.value += u'<p>{0}.</p>'.format(_(u'oshibka_otpravki_v_rb'))
+                        issue.followers.add(User.objects.get(username='anytask.monitoring'))
                 break
 
     event.save()

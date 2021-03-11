@@ -41,12 +41,16 @@ class Command(BaseCommand):
                             not task.course.send_rb_and_contest_together and \
                             task.rb_integrated:
                         anyrb = AnyRB(contest_submission.file.event)
-                        review_request_id = anyrb.upload_review()
-                        if review_request_id is not None:
-                            comment += '\n' + u'<a href="{1}/r/{0}">Review request {0}</a>'. \
-                                format(review_request_id, settings.RB_API_URL)
+                        try:
+                            review_request_id = anyrb.upload_review()
+                        except UnicodeDecodeError:
+                            comment += u'<p>{0}</p>'.format(_(u'plohaya_kodirovka'))
                         else:
-                            comment += '\n' + _(u'oshibka_otpravki_v_rb')
+                            if review_request_id is not None:
+                                comment += '\n' + u'<a href="{1}/r/{0}">Review request {0}</a>'. \
+                                    format(review_request_id, settings.RB_API_URL)
+                            else:
+                                comment += '\n' + _(u'oshibka_otpravki_v_rb')
                     if contest_submission.verdict == 'ok' and \
                             task.accepted_after_contest_ok and \
                             not issue.is_status_accepted():

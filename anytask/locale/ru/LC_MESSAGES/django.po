@@ -45,6 +45,10 @@ msgstr "Информация о вас была удалена."
 msgid "oshibka_otpravki_v_rb"
 msgstr "Ошибка отправки в Review Board"
 
+#: issues/views.py:115
+msgid "plohaya_kodirovka"
+msgstr "Некорректная кодировка"
+
 #: anycontest/management/commands/check_contest.py:57
 msgid "bally_ne_uchityvautsia"
 msgstr "Баллы за задачу, зачтенную после дедлайна, не учитываются"

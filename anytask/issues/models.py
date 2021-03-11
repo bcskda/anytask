@@ -340,13 +340,18 @@ class Issue(models.Model):
                             filename, extension = os.path.splitext(file.name)
                             if ext == extension or ext == '.*':
                                 anyrb = AnyRB(event)
-                                review_request_id = anyrb.upload_review()
-                                if review_request_id is not None:
-                                    value['comment'] += u'<p><a href="{1}/r/{0}">Review request {0}</a></p>'. \
-                                        format(review_request_id, settings.RB_API_URL)
-                                else:
-                                    value['comment'] += u'<p>{0}</p>'.format(_(u'oshibka_otpravki_v_rb'))
+                                try:
+                                    review_request_id = anyrb.upload_review()
+                                except UnicodeDecodeError:
+                                    value['comment'] += u'<p>{0}</p>'.format(_(u'plohaya_kodirovka'))
                                     self.followers.add(User.objects.get(username='anytask.monitoring'))
+                                else:
+                                    if review_request_id is not None:
+                                        value['comment'] += u'<p><a href="{1}/r/{0}">Review request {0}</a></p>'. \
+                                            format(review_request_id, settings.RB_API_URL)
+                                    else:
+                                        value['comment'] += u'<p>{0}</p>'.format(_(u'oshibka_otpravki_v_rb'))
+                                        self.followers.add(User.objects.get(username='anytask.monitoring'))
                                 break
 
                 if not value['files'] and not value['comment']:

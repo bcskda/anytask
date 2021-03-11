@@ -20,6 +20,9 @@ class AnyRB(object):
         self.event = event
 
     def upload_review(self):
+        """Returns: uploaded review_request id
+        Throws: UnicodeDecodeError
+        """
         if len(self.event.file_set.all()) == 0:
             return None
 
@@ -27,19 +30,29 @@ class AnyRB(object):
         empty = True
         import magic
 
+        def decode_file_bytes(file_like):
+            """Returns: list of str
+            Trows: UnicodeDecodeError
+            """
+            def decode_line(line):
+                last_e = None
+                for encoding in ['utf-8', 'cp1251']:
+                    try:
+                        return line.decode(encoding)
+                    except (UnicodeDecodeError, UnicodeEncodeError) as e:
+                        last_e = e
+                raise last_e
+
+            return list(map(decode_line, file_like))
+
         with unpack_files(self.event.file_set.all()) as files:
             for f in files:
                 mime_type = magic.from_buffer(f.file.read(1024), mime=True)
                 if mime_type[:4] != 'text':
                     continue
 
+                file_content = decode_file_bytes(f.file)
                 empty = False
-                file_content = []
-                for line in f.file:
-                    try:
-                        file_content.append(line.decode('utf-8'))
-                    except (UnicodeDecodeError, UnicodeEncodeError):
-                        file_content.append(line.decode('cp1251'))
 
                 from difflib import unified_diff
                 fname = f.filename()
