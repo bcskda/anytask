@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-06 21:56+0300\n"
+"POT-Creation-Date: 2021-04-06 17:44+0300\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
@@ -97,10 +97,6 @@ msgstr "Problem discussion"
 msgid "novyj_kommentarij"
 msgstr "New comment"
 
-#: blog/templates/blog.html:4 blog/templates/blog.html:9
-msgid "blog_anytask"
-msgstr "Anytask blog"
-
 #: courses/forms.py:25 issues/models.py:74
 msgid "na_dorabotke"
 msgstr "Refinement stage"
@@ -168,7 +164,7 @@ msgstr "Check up queue"
 #: courses/templates/courses/gradebook.html:56
 #: courses/templates/courses/queue.html:44
 #: courses/templates/courses/settings.html:21
-#: courses/templates/courses/settings.html:52 templates/base.html:706
+#: courses/templates/courses/settings.html:52 templates/base.html:714
 #: users/templates/my_tasks.html:105 users/templates/status_history.html:27
 #: users/templates/user_courses.html:37 users/templates/user_profile.html:29
 #: users/templates/user_settings.html:25 users/templates/user_settings.html:35
@@ -568,7 +564,7 @@ msgstr "TA"
 #: issues/templates/issues/issue_js.html:65 mail/templates/mail_js.html:76
 #: mail/templates/mail_js.html:604 search/templates/search.html:62
 #: staff/templates/staff_js.html:49 staff/templates/staff_js.html:177
-#: tasks/templates/task_create_or_edit_js.html:70 templates/base.html:675
+#: tasks/templates/task_create_or_edit_js.html:70 templates/base.html:683
 #: users/templates/my_tasks.html:45
 msgid "najti"
 msgstr "Find"
@@ -633,7 +629,7 @@ msgstr "Move to \"counted\""
 
 #: courses/templates/courses/settings.html:228
 #: issues/templates/issues/issue.html:46 mail/templates/mail_js.html:561
-#: search/templates/search.html:138 templates/base.html:115
+#: search/templates/search.html:138 templates/base.html:123
 #: users/templates/user_profile.html:181 users/templates/user_settings.html:96
 msgid "jakontest"
 msgstr "Ya.Contest"
@@ -831,6 +827,18 @@ msgstr "Contest error"
 msgid "net_prav_na_kontest"
 msgstr "Contest: Permission denied"
 
+#: index/templates/archived_schools_page.html:19
+#: index/templates/archived_schools_page.html:27
+#: index/templates/schools_page.html:19 issues/model_issue_student_filter.py:47
+#: schools/templates/archive_page.html:23
+#: schools/templates/archive_page.html:32 schools/templates/school_page.html:22
+#: search/templates/search.html:170 templates/base.html:143
+#: users/templates/user_courses.html:65 users/templates/user_courses.html:72
+#: users/templates/user_profile.html:398 users/templates/user_profile.html:487
+#: users/templates/user_profile.html:529
+msgid "arhiv"
+msgstr "Archive"
+
 #: invites/templates/generate.html:4 invites/templates/generate.html:62
 msgid "sozdanie_invajtov"
 msgstr "Create the invite code"
@@ -949,16 +957,6 @@ msgstr "Any"
 #: issues/model_issue_student_filter.py:46
 msgid "aktivnyj"
 msgstr "Active"
-
-#: issues/model_issue_student_filter.py:47
-#: schools/templates/archive_page.html:23
-#: schools/templates/archive_page.html:32 schools/templates/school_page.html:22
-#: search/templates/search.html:170 templates/base.html:135
-#: users/templates/user_courses.html:65 users/templates/user_courses.html:72
-#: users/templates/user_profile.html:398 users/templates/user_profile.html:487
-#: users/templates/user_profile.html:529
-msgid "arhiv"
-msgstr "Archive"
 
 #: issues/models.py:76
 msgid "zachteno"
@@ -1576,16 +1574,16 @@ msgid "skryt_citirovanie"
 msgstr "Hide citing"
 
 #: mail/templates/mail_js.html:532 search/templates/search.html:124
-#: templates/base.html:86
+#: templates/base.html:94
 msgid "loginy"
 msgstr "Logins"
 
-#: mail/templates/mail_js.html:548 templates/base.html:102
+#: mail/templates/mail_js.html:548 templates/base.html:110
 msgid "yeshcho"
 msgstr ""
 
 #: mail/templates/mail_js.html:563 search/templates/search.html:146
-#: templates/base.html:117
+#: templates/base.html:125
 msgid "ja.pochta"
 msgstr "Yandex mail"
 
@@ -1709,11 +1707,11 @@ msgid "kursov"
 msgstr "Courses"
 
 #: search/templates/search.html:88 staff/templates/staff.html:78
-#: templates/base.html:80
+#: templates/base.html:88
 msgid "polzovateli"
 msgstr "Users"
 
-#: search/templates/search.html:162 templates/base.html:129
+#: search/templates/search.html:162 templates/base.html:137
 msgid "kursy"
 msgstr "Courses"
 
@@ -2140,54 +2138,54 @@ msgstr "500 error"
 msgid "nam"
 msgstr "Us"
 
-#: templates/base.html:155
+#: templates/base.html:163
 #, fuzzy
 #| msgid "vse_statusy"
 msgid "vse_resultaty"
 msgstr "All statuses"
 
-#: templates/base.html:690
+#: templates/base.html:698
 #, fuzzy
 #| msgid "est_novye_soobshenija"
 msgid "base_est_novye_soobshenija"
 msgstr "New messages available"
 
-#: templates/base.html:693
+#: templates/base.html:701
 msgid "net_novyh_soobshenij"
 msgstr "No new messages"
 
-#: templates/base.html:705 users/templates/my_tasks.html:96
+#: templates/base.html:713 users/templates/my_tasks.html:96
 #: users/templates/status_history.html:18 users/templates/user_courses.html:28
 #: users/templates/user_profile.html:19 users/templates/user_settings.html:16
 #: users/views.py:426
 msgid "profil"
 msgstr "Profile"
 
-#: templates/base.html:709
+#: templates/base.html:717
 msgid "adminka"
 msgstr "Admin panel"
 
-#: templates/base.html:712 templates/registration/password_reset_email.html:42
+#: templates/base.html:720 templates/registration/password_reset_email.html:42
 msgid "smenit_parol"
 msgstr "Change password"
 
-#: templates/base.html:714
+#: templates/base.html:722
 msgid "vyjti"
 msgstr "Logout"
 
-#: templates/base.html:721 templates/registration/registration_form.html:85
+#: templates/base.html:737 templates/registration/registration_form.html:85
 msgid "vojdite"
 msgstr "Sing In"
 
-#: templates/base.html:724
+#: templates/base.html:740
 msgid "zaregistrirujtes"
 msgstr "Sign up"
 
-#: templates/base.html:755
-msgid "blog"
-msgstr "Blog"
+#: templates/base.html:782
+msgid "source_repo"
+msgstr "GitHub repository"
 
-#: templates/base.html:774
+#: templates/base.html:801
 msgid "pishite_nam"
 msgstr "Contact us"
 
