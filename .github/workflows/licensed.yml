@@ -1,0 +1,15 @@
+name: Check licenses of dependencies
+
+on: [push, pull_request]
+
+jobs:
+  licensed_check:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+      - uses: jonabc/setup-licensed@v1
+        with:
+          version: '2.x'
+      - run: npm install # install dependencies in local environment
+      - run: licensed cache
+      - run: licensed list
