@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^setlanguage/', users.views.set_user_language),
     url(r'^invites/', include('invites.urls')),
     url(r'^anyrb/', include('anyrb.urls')),
+    url(r'^anytelegram/', include('anytelegram.urls')),
     url(r'^accounts/logout/$', django.contrib.auth.views.logout, {'next_page': '/'}),
     url(r'^accounts/profile/(?P<username>.*)/(?P<year>\d+)', users.views.profile, name='users.views.profile'),
     url(r'^accounts/profile/(?P<username>.*)', users.views.profile, name='users.views.profile'),

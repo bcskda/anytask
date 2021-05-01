@@ -196,6 +196,7 @@ INSTALLED_APPS = (
     'lessons',
     'api',
     'django_premailer',
+    'anytelegram'
 )
 
 AUTH_PROFILE_MODULE = "users.UserProfile"
