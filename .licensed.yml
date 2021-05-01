@@ -28,5 +28,6 @@ reviewed:
     - pycrypto
     - python-dateutil
     - python-magic
+    - python-telegram-bot
     - text-unidecode
     - webencodings
