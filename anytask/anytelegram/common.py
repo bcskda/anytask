@@ -3,7 +3,11 @@ from mail.base import BaseRenderer, BaseSender
 import logging
 
 
-logger = logging.getLogger('anytelegram')
+logger = logging.getLogger('django.request')
+
+
+def bot_endpoint(token):
+    return 'https://api.telegram.org/bot{}'.format(token)
 
 
 class TelegramRenderer(BaseRenderer):
