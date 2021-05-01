@@ -1,9 +1,12 @@
 from django.conf import settings
-from telegram import Bot, TelegramError
-from telegram.ext import Dispatcher
+from telegram import Bot, Update, TelegramError
+from telegram.ext import Dispatcher, CommandHandler
+
+from bot_handlers import handlers
 
 from mail.base import BaseRenderer, BaseSender
 
+import json
 import logging
 
 
@@ -27,7 +30,13 @@ class AnyTelegram:
 
     def get_dispatcher(self):
         if self._dispatcher is None:
-            self._dispatcher = Dispatcher(self.get_bot(), update_queue=None, workers=0)
+            self._dispatcher = Dispatcher(
+                self.get_bot(),
+                use_context=True,
+                update_queue=None, workers=0
+            )
+            for command, handler in handlers.items():
+                self._dispatcher.add_handler(CommandHandler(command, handler))
         return self._dispatcher
 
     def set_webhook(self, **kwargs):
@@ -43,6 +52,10 @@ class AnyTelegram:
         except TelegramError as e:
             logger.exception('delete_webhook', exc_info=e)
             return False
+
+    def process_update(self, json_text):
+        update = Update.de_json(json.loads(json_text), self.get_bot())
+        return self.get_dispatcher().process_update(update)
 
     @classmethod
     def get_bot_endpoint(cls):
