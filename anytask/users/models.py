@@ -2,6 +2,7 @@
 
 import logging
 import os
+import uuid
 
 from courses.models import Course
 from django.contrib.auth.models import User
@@ -74,6 +75,8 @@ class UserProfile(models.Model):
     ya_passport_login = models.CharField(default="", max_length=128, unique=False, null=True, blank=True)
     ya_passport_email = models.CharField(default="", max_length=128, unique=False, null=True, blank=True)
 
+    # can be re-used to re-link account
+    telegram_link_secret = models.UUIDField(default=uuid.uuid4, null=False, blank=False, unique=True)
     telegram_uid = models.IntegerField(default=None, null=True, blank=True)
     notify_in_telegram = models.BooleanField(default=False, null=False, blank=False)
 
