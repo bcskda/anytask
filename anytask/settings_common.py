@@ -327,3 +327,8 @@ AWS_DEFAULT_ACL = 'public-read'  # As when served by Django & FileSystemStorage
 AWS_S3_USE_SSL = False
 
 DEFAULT_FILE_STORAGE = 'anytask.storage.S3OverlayStorage'
+
+# None ~= disable integration
+TELEGRAM_TOKEN = None
+TELEGRAM_WEBHOOK_SECRET = None
+TELEGRAM_WEBHOOK_URL = None
