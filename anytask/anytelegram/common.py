@@ -19,13 +19,21 @@ class AnyTelegram:
     _token = settings.TELEGRAM_TOKEN
     _webhook_url = settings.TELEGRAM_WEBHOOK_URL
 
-    def __init__(self):
+    def __init__(self, base_url=None):
+        """
+        Args:
+            base_url: as in telegram.Bot.__init__()
+        """
+        self._base_url = base_url
         self._bot = None
         self._dispatcher = None
 
     def get_bot(self):
         if self._bot is None:
-            self._bot = Bot(self._token)
+            kwargs = dict()
+            if self._base_url:
+                kwargs['base_url'] = self._base_url
+            self._bot = Bot(self._token, **kwargs)
         return self._bot
 
     def get_dispatcher(self):
