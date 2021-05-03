@@ -16,8 +16,8 @@ logger = logging.getLogger('django.request')
 class AnyTelegram:
     """Not thread-safe: must be called from single thread"""
 
-    _token = settings.TELEGRAM_TOKEN
-    _webhook_url = settings.TELEGRAM_WEBHOOK_URL
+    _token = settings.TELEGRAM_TOKEN or '1234567890:ABCDEFGHIJKLMONPQRSTUVWXYZ1234567-8'
+    _webhook_url = settings.TELEGRAM_WEBHOOK_URL or ''
 
     def __init__(self, base_url=None):
         """
