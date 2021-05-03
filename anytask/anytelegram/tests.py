@@ -4,6 +4,7 @@ import json
 import random
 import re
 import threading
+import uuid
 from Queue import Queue
 
 from django.test import TestCase
@@ -145,6 +146,26 @@ class AnyTelegramTests(TestCase):
                 u'chat_id': u'463992304',
                 u'disable_notification': u'False',
                 u'text': u'Visit your profile to get the secret, then call /link <secret>'
+            })
+        ]
+        trapped = []
+        while not self.api_server.trapped_requests.empty():
+            trapped.append(self.api_server.trapped_requests.get())
+        self.assertIsNone(result)
+        self.assertListEqual(expected_trapped, trapped)
+
+    def test_link_valid(self):
+        self.first_student.profile.telegram_link_secret = uuid.UUID('53cd4396-8b96-45a7-a123-11f1107b56c7')
+        self.first_student.profile.save()
+
+        update = get_mock_update('link_valid')
+        result = self.api_client.process_update(json.dumps(update))
+        expected_trapped = [
+            ('getMe', dict()),
+            ('sendMessage', {
+                u'chat_id': u'463992304',
+                u'disable_notification': u'False',
+                u'text': u'Success!'
             })
         ]
         trapped = []
