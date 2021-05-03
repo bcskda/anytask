@@ -1,6 +1,8 @@
 import BaseHTTPServer
 import SocketServer
 import json
+import random
+import re
 import threading
 from Queue import Queue
 
@@ -16,17 +18,69 @@ class TelegramApiServerMock(threading.Thread):
     LISTEN_PORT = 29668
 
     class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
-        def do_GET(self):  # NOQA
-            req = self.path
-            self.server.trapped_requests.put(req)
-            self.send_response(501)
+        def api_get_me(self):
+            self.server.trapped_requests.put(('getMe', dict()))
+            user = {
+                'id': '1234567890',
+                'is_bot': True,
+                'first_name': 'bot_first_name',
+                'last_name': 'bot_last_name',
+                'username': 'bot',
+                'language_code': 'ru',
+                'can_join_groups': False,
+                'can_read_all_group_messages': False,
+                'supports_inline_queries': False
+            }
+            resp = {
+                'ok': True,
+                'result': user,
+            }
+            resp_text = json.dumps(resp)
+            self.send_response(200)
+            self.send_header('content-length', len(resp_text))
             self.end_headers()
+            self.wfile.write(resp_text)
+
+        def api_send_message(self):
+            request = json.load(self.rfile)
+            self.server.trapped_requests.put(('sendMessage', request))
+            message = {
+                'message_id': int(random.random()),
+                'date': 0,
+                'chat': {
+                    'id': request['chat_id'],
+                    'type': 'private',
+                }
+            }
+            resp = {
+                'ok': True,
+                'result': message,
+            }
+            resp_text = json.dumps(resp)
+            self.send_response(200)
+            self.send_header('content-length', len(resp_text))
+            self.end_headers()
+            self.wfile.write(resp_text)
+
+        @classmethod
+        def strip_token(cls, path):
+            return re.match(r'/.+/(.+)$', path).group(1)
+
+        def do_GET(self):  # NOQA
+            req = self.strip_token(self.path)
+            if req.startswith('getMe'):
+                return self.api_get_me()
+            else:
+                self.send_response(501)
+                self.end_headers()
 
         def do_POST(self):  # NOQA
-            req = self.path
-            self.server.trapped_requests.put(req)
-            self.send_response(501)
-            self.end_headers()
+            req = self.strip_token(self.path)
+            if req.startswith('sendMessage'):
+                return self.api_send_message()
+            else:
+                self.send_response(501)
+                self.end_headers()
 
     def __init__(self):
         super(TelegramApiServerMock, self).__init__()
