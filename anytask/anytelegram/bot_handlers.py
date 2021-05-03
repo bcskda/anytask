@@ -27,11 +27,14 @@ def link(update, context):
         update.message.reply_text('Usage: /link <secret>')
         return
 
-    user_matches = UserProfile.objects.filter(telegram_link_secret=secret)
-    if not user_matches:
+    try:
+        user_matches = list(UserProfile.objects.filter(telegram_link_secret=secret))
+        if len(user_matches) == 0:
+            raise KeyError()
+    except Exception:
         update.message.reply_text('Invalid secret')
         return
-    user_matches = list(user_matches)
+
     assert len(user_matches) == 1
     user_profile = user_matches[0]
 
