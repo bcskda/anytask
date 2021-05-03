@@ -9,7 +9,7 @@ from Queue import Queue
 
 from django.test import TestCase
 
-from users.models import User, UserProfile
+from users.models import User
 from common import AnyTelegram
 from test_data import get_mock_update
 
