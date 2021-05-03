@@ -139,8 +139,16 @@ class AnyTelegramTests(TestCase):
     def test_reply_start(self):
         update = get_mock_update('bcskda_start')
         result = self.api_client.process_update(json.dumps(update))
+        expected_trapped = [
+            ('getMe', dict()),
+            ('sendMessage', {
+                u'chat_id': u'463992304',
+                u'disable_notification': u'False',
+                u'text': u'Visit your profile to get the secret, then call /link <secret>'
+            })
+        ]
         trapped = []
         while not self.api_server.trapped_requests.empty():
             trapped.append(self.api_server.trapped_requests.get())
         self.assertIsNone(result)
-        self.assertListEqual([], trapped)
+        self.assertListEqual(expected_trapped, trapped)

@@ -28,6 +28,11 @@ class AnyTelegram:
         self._bot = None
         self._dispatcher = None
 
+    def _error_handler(self, update, context):
+        logger.exception('Unhandled exception %s processing %s',
+                         context.error, update,
+                         exc_info=context.error)
+
     def get_bot(self):
         if self._bot is None:
             kwargs = dict()
@@ -45,6 +50,7 @@ class AnyTelegram:
             )
             for command, handler in handlers.items():
                 self._dispatcher.add_handler(CommandHandler(command, handler))
+            self._dispatcher.add_error_handler(self._error_handler)
         return self._dispatcher
 
     def set_webhook(self, **kwargs):
