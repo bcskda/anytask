@@ -9,8 +9,9 @@ from Queue import Queue
 
 from django.test import TestCase
 
+from mail.models import Message
 from users.models import User
-from common import AnyTelegram
+from common import AnyTelegram, TelegramRenderer
 from test_data import get_mock_update
 
 
@@ -190,3 +191,54 @@ class AnyTelegramTests(TestCase):
             trapped.append(self.api_server.trapped_requests.get())
         self.assertIsNone(result)
         self.assertListEqual(expected_trapped, trapped)
+
+
+class TelegramRendererTests(TestCase):
+    def setUp(self):
+        self.renderer = TelegramRenderer('example.com')
+
+        self.sender = User.objects.create_user(
+            username='sender', password='sender')
+        self.sender.first_name = 'SenderFirstName'
+        self.sender.last_name = 'SenderLastName'
+        self.sender.save()
+
+        self.recipient = User.objects.create_user(
+            username='recipients', password='recipients')
+        self.recipient.telegram_uid = "463992304"
+        self.recipient.first_name = 'RecipientFirstName'
+        self.recipient.last_name = 'RecipientLastName'
+        self.recipient.save()
+
+        self.message_first = Message()
+        self.message_first.sender = self.sender
+        self.message_first.title = "title_first"
+        self.message_first.text = "text_first"
+        self.message_first.save()
+
+        self.message_second = Message()
+        self.message_second.sender = self.sender
+        self.message_second.title = "title_second"
+        self.message_second.text = "text_second"
+        self.message_second.save()
+
+    def test_notification_one_message(self):
+        markdown, recipient_uid = self.renderer.render_notification(
+            self.recipient.profile, [self.message_first])
+        md_expected = u'''__u_vas_soobshenij 1 novoe_soobshenie__\n''' \
+                      '''posmotret_soobshenija:\n''' \
+                      '''example.com/mail/\n''' \
+                      '''1. SenderFirstName SenderLastName -- _title_first_'''
+        self.assertEqual(md_expected, markdown)
+        self.assertEqual(self.recipient.profile.telegram_uid, recipient_uid)
+
+    def test_notification_two_messages(self):
+        markdown, recipient_uid = self.renderer.render_notification(
+            self.recipient.profile, [self.message_first, self.message_second])
+        md_expected = u'''__u_vas_soobshenij 2 novyh_soobshenija__\n''' \
+                      '''posmotret_soobshenija:\n''' \
+                      '''example.com/mail/\n''' \
+                      '''1. SenderFirstName SenderLastName -- _title_first_\n''' \
+                      '''2. SenderFirstName SenderLastName -- _title_second_'''
+        self.assertEqual(md_expected, markdown)
+        self.assertEqual(self.recipient.profile.telegram_uid, recipient_uid)
