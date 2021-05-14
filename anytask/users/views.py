@@ -60,10 +60,11 @@ def profile(request, username=None, year=None):
     user_to_show_profile = user_to_show.profile
 
     show_email = True
+    show_telegram = True
     user_above_user_to_show = True
 
     if user_to_show != user:
-        show_email, user_above_user_to_show = check_view_profile_permission(user, user_to_show, user_to_show_profile)
+        show_email, show_telegram, user_above_user_to_show = check_view_profile_permission(user, user_to_show, user_to_show_profile)
 
     teacher_in_courses = Course.objects.filter(is_active=True).filter(teachers=user_to_show).distinct()
 
@@ -135,6 +136,7 @@ def profile(request, username=None, year=None):
         'user_to_show_profile': user_to_show_profile,
         'card_width': card_width,
         'show_email': show_email,
+        'show_telegram': show_telegram,
         'user_above_user_to_show': user_above_user_to_show,
         'age': age,
     }
@@ -177,10 +179,15 @@ def check_view_profile_permission(user, user_to_show, user_to_show_profile):
         user_to_show_profile.show_email or \
         user_teach_user_to_show or \
         user_to_show_teach_user
+    show_telegram = \
+        user.is_staff or \
+        user_to_show_profile.show_telegram or \
+        user_teach_user_to_show or \
+        user_to_show_teach_user
     user_above_user_to_show = \
         user.is_staff or \
         user_school_teach_user_to_show
-    return show_email, user_above_user_to_show
+    return show_email, show_telegram, user_above_user_to_show
 
 
 def group_by_year(objects):
@@ -202,6 +209,7 @@ def profile_settings(request):
 
     if request.method == 'POST':
         user_profile.show_email = 'show_email' in request.POST
+        user_profile.show_telegram = 'show_telegram' in request.POST
         user_profile.send_my_own_events = 'send_my_own_events' in request.POST
         user_profile.location = request.POST.get('location', '')
         if 'geoid' in request.POST:

@@ -64,13 +64,22 @@
                                   {% else %}{{ user_to_show_profile.avatar.url }}{% endif %}">
                         </div>
                         {{ user_to_show.get_full_name }}
-                        <br>
                         {% if show_email %}
+                            <br>
                             <small class="text-muted">{{ user_to_show.email }}</small>
                             <div class="social-acc-info">
                                 {% if user_to_show_profile.ya_passport_email %}
                                     <small class="text-muted">{% trans "japochta" %}&nbsp;</small>
                                     <small class="text-muted">{{ user_to_show_profile.ya_passport_email }}</small>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        {% if show_telegram %}
+                            <br>
+                            <div class="social-acc-info">
+                                {% if user_to_show_profile.telegram_uid %}
+                                    <small class="text-muted">{% trans "telegram_login" %}&nbsp;</small>
+                                    <small class="text-muted">{{ user_to_show_profile.telegram_uid }}</small>
                                 {% endif %}
                             </div>
                         {% endif %}

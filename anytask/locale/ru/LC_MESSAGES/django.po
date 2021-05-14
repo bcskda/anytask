@@ -2354,6 +2354,10 @@ msgstr "Нет ни одного курса."
 msgid "japochta"
 msgstr "Яндекс.Почта"
 
+ #: users/templates/user_profile.html:81
+msgid "telegram_login"
+msgstr "Telegram-логин"
+
 #: users/templates/user_profile.html:86
 msgid "sgenerirovat_invajty"
 msgstr "Сгенерировать инвайты"

@@ -2453,6 +2453,10 @@ msgstr "No courses"
 msgid "japochta"
 msgstr "Yandex mail"
 
+#: users/templates/user_profile.html:81
+msgid "telegram_login"
+msgstr "Telegram login"
+
 #: users/templates/user_profile.html:86
 msgid "sgenerirovat_invajty"
 msgstr "Generate invite codes"
