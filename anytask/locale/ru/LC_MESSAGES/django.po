@@ -2405,6 +2405,30 @@ msgstr "Привязка аккаунтов"
 msgid "jandeks"
 msgstr "Яндекс"
 
+#: users/templates/user_settings.html:125
+msgid "telegram"
+msgstr "Telegram"
+
+#: users/templates/tg_instruction.html:1
+msgid "tg_otkroite_bota"
+msgstr "Откройте диалог с ботом"
+
+#: users/templates/tg_instruction.html:1
+msgid "tg_ssylka"
+msgstr "ссылка"
+
+#: users/templates/tg_instruction.html:3
+msgid "tg_napishite_komandu"
+msgstr "Отправьте команду"
+
+#: users/templates/tg_instruction.html:3
+msgid "tg_secret"
+msgstr "секрет"
+
+#: users/templates/tg_instruction.html:5
+msgid "tg_vash_secret"
+msgstr "Ваш секрет"
+
 #: users/templates/user_profile.html:218
 msgid "data_rozhdeniya"
 msgstr "Дата рождения"

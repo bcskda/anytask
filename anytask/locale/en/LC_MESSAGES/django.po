@@ -2502,6 +2502,30 @@ msgstr "Link accounts"
 msgid "jandeks"
 msgstr "Yandex"
 
+#: users/templates/user_settings.html:125
+msgid "telegram"
+msgstr "Telegram"
+
+#: users/templates/tg_instruction.html:1
+msgid "tg_otkroite_bota"
+msgstr "Open dialog with bot"
+
+#: users/templates/tg_instruction.html:1
+msgid "tg_ssylka"
+msgstr "link"
+
+#: users/templates/tg_instruction.html:3
+msgid "tg_napishite_komandu"
+msgstr "Send command"
+
+#: users/templates/tg_instruction.html:3
+msgid "tg_secret"
+msgstr "secret"
+
+#: users/templates/tg_instruction.html:5
+msgid "tg_vash_secret"
+msgstr "Your secret"
+
 #: users/templates/user_profile.html:218
 msgid "data_rozhdeniya"
 msgstr "Birth date"
