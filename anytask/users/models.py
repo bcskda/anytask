@@ -79,6 +79,7 @@ class UserProfile(models.Model):
     telegram_link_secret = models.UUIDField(default=uuid.uuid4, null=False, blank=False, unique=True)
     telegram_uid = models.IntegerField(default=None, null=True, blank=True)
     notify_in_telegram = models.BooleanField(default=False, null=False, blank=False)
+    show_telegram = models.BooleanField(default=False, null=False, blank=False)
 
     language = models.CharField(default="ru", max_length=128, unique=False, null=True, blank=True)
     time_zone = models.TextField(null=False, blank=False, default='Europe/Moscow')
@@ -168,6 +169,7 @@ class UserProfileLog(models.Model):
 
     telegram_uid = models.IntegerField(default=None, null=True, blank=True)
     notify_in_telegram = models.BooleanField(default=False, null=False, blank=False)
+    show_telegram = models.BooleanField(default=False, null=False, blank=False)
 
     language = models.CharField(default="ru", max_length=128, unique=False, null=True, blank=True)
 
