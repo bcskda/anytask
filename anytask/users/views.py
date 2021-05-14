@@ -64,7 +64,8 @@ def profile(request, username=None, year=None):
     user_above_user_to_show = True
 
     if user_to_show != user:
-        show_email, show_telegram, user_above_user_to_show = check_view_profile_permission(user, user_to_show, user_to_show_profile)
+        show_email, show_telegram, user_above_user_to_show = \
+            check_view_profile_permission(user, user_to_show, user_to_show_profile)
 
     teacher_in_courses = Course.objects.filter(is_active=True).filter(teachers=user_to_show).distinct()
 
