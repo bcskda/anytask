@@ -12,6 +12,7 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import check_for_language
 from django.utils import timezone
 
+from anytelegram.common import AnyTelegram
 from users.models import UserProfile
 from users.model_user_status import UserStatus
 from issues.model_issue_student_filter import IssueFilterStudent
@@ -212,9 +213,16 @@ def profile_settings(request):
 
         return HttpResponse("OK")
 
+    if settings.TELEGRAM_TOKEN is not None:
+        tg_bot_link = AnyTelegram.get_bot_contact_link()
+    else:
+        tg_bot_link = None
+
     context = {
         'user_profile': user_profile,
-        'geo_suggest_url': settings.GEO_SUGGEST_URL
+        'geo_suggest_url': settings.GEO_SUGGEST_URL,
+        'show_tg_integration': tg_bot_link is not None,
+        'tg_bot_link': tg_bot_link,
     }
 
     return render(request, 'user_settings.html', context)

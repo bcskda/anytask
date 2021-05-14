@@ -79,6 +79,11 @@ class AnyTelegram:
     def get_webhook_url(cls):
         return cls._webhook_url
 
+    @classmethod
+    def get_bot_contact_link(cls):
+        instance = cls()
+        return 'https://t.me/{0}'.format(instance.get_bot().username)
+
 
 class TelegramRenderer(BaseRenderer):
     def render_notification(self, user_profile, unread_messages):

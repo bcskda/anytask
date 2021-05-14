@@ -12,11 +12,19 @@
     background-color: #fc2e1c;
 }
 
+.social-acc-tg {
+    background-color: #0088cc;
+}
+
 .social-acc-contest {
     background-color: #ffdb4d;
 }
 
 .social-acc-ya-item {
+    color: #fff;
+}
+
+.social-acc-tg-item {
     color: #fff;
 }
 

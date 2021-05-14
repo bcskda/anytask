@@ -119,6 +119,37 @@
                                 </div>
                             </li>
                         {% endif %}
+                        {% if show_tg_integration %}
+                            <li>
+                                <div class="social-acc-panel-item">
+                                    <div class="social-acc-type social-acc social-acc-tg">
+                                        <span class="social-icons social-acc-tg-item">{% trans "telegram" %}</span>
+                                    </div>
+                                    <div class="social-acc-login">
+                                        {% if user_profile.telegram_uid %}
+                                            {{ user_profile.telegram_uid }}
+                                        {% else %}
+                                            &nbsp;
+                                        {% endif %}
+                                    </div>
+                                    <div class="social-acc-action">
+                                        {% if user_profile.telegram_uid %}
+                                            <button class="btn btn-secondary btn-icon" type="button" onclick="alert('Telegram ID update not implemented')"><i class="fa fa-fw fa-refresh"></i></button>
+                                            <button class="btn btn-secondary btn-icon" type="button" onclick="alert('Telegram ID unset not implemented')"><i class="fa fa-fw fa-trash-o"></i></button>
+                                        {% else %}
+                                            <button class="btn btn-secondary btn-icon" type="button" onclick="$('#tg-instructions-dialog').dialog('open')"><i class="fa fa-fw fa-plus"></i></button>
+                                        {% endif %}
+                                        <div id="tg-instructions-dialog">
+                                            {% trans "tg_otkroite_bota" %}: <a href='{{ tg_bot_link }}' target="_blank">{% trans "tg_ssylka" %}</a>
+                                            <br>
+                                            {% trans "tg_napishite_komandu" %} <div class="mce-monospace">/link ({% trans "tg_secret" %})</div>
+                                            <br>
+                                            {% trans "tg_vash_secret" %}: <div class="mce-monospace">{{ user_profile.telegram_link_secret }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
