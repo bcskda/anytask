@@ -28,7 +28,7 @@ class Command(BaseCommand):
         email_renderer = EmailRenderer(domain, from_email)
         email_sender = EmailSender(from_email)
 
-        tg_renderer = TelegramRenderer()
+        tg_renderer = TelegramRenderer(domain)
         tg_sender = TelegramSender()
 
         if hasattr(settings, 'SEND_MESSAGE_FULLTEXT') and settings.SEND_MESSAGE_FULLTEXT:

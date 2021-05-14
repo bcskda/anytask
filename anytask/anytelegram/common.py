@@ -1,10 +1,13 @@
 from django.conf import settings
+from django.template.loader import render_to_string
+
 from telegram import Bot, Update, TelegramError
 from telegram.ext import Dispatcher, CommandHandler
 
 from bot_handlers import handlers
 
 from mail.base import BaseRenderer, BaseSender
+from mail.common import enable_translation
 
 import json
 import logging
@@ -86,8 +89,29 @@ class AnyTelegram:
 
 
 class TelegramRenderer(BaseRenderer):
+    def __init__(self, domain):
+        BaseRenderer.__init__(self)
+        self.domain = domain
+
     def render_notification(self, user_profile, unread_messages):
-        return 'Rendered notifications stub'
+        with enable_translation(user_profile):
+            user = user_profile.user
+
+            unread_count = len(unread_messages)
+            unread_count_string = self._get_string(unread_count)
+
+            context = {
+                "domain": self.domain,
+                "user": user,
+                "unread_count": unread_count,
+                "unread_count_string": unread_count_string,
+                "messages": list(zip(range(1, unread_count + 1), unread_messages))
+            }
+
+            markdown = render_to_string('tg_notification_mail.md', context).strip()
+            rendered_message = (markdown, user_profile.telegram_uid)
+
+        return rendered_message
 
     def render_fulltext(self, message, recipients):
         return 'Rendered fulltext stub'
