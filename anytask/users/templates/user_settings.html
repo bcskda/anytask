@@ -43,6 +43,12 @@
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="show_telegram" name="show_telegram" {% if user_profile.show_telegram %}checked{% endif %}>
+                                {% trans "pokazyvat_moj_telegram" %}
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
                                 <input type="checkbox" class="form-check-input" id="send_my_own_events" name="send_my_own_events" {% if user_profile.send_my_own_events %}checked{% endif %}>
                                 {% trans "otpravljat_mne_kommentarii" %}
                             </label>

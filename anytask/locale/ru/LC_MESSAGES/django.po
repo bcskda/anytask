@@ -2494,6 +2494,10 @@ msgid "pokazyvat_moj_e-mail"
 msgstr "Показывать мой электронный адрес всем пользователям"
 
 #: users/templates/user_settings.html:47
+msgid "pokazyvat_moj_telegram"
+msgstr "Показывать мой Telegram-логин"
+
+#: users/templates/user_settings.html:47
 msgid "otpravljat_mne_kommentarii"
 msgstr "Отправлять мои комментарии на мой электронный адрес. "
 
