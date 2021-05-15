@@ -1,5 +1,7 @@
 from django.conf import settings
+from django.template import Template, Context
 from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 from telegram import Bot, Update, TelegramError
 from telegram.ext import Dispatcher, CommandHandler
@@ -95,14 +97,11 @@ class TelegramRenderer(BaseRenderer):
 
     def render_notification(self, user_profile, unread_messages):
         with enable_translation(user_profile):
-            user = user_profile.user
-
             unread_count = len(unread_messages)
             unread_count_string = self._get_string(unread_count)
 
             context = {
                 "domain": self.domain,
-                "user": user,
                 "unread_count": unread_count,
                 "unread_count_string": unread_count_string,
                 "messages": list(zip(range(1, unread_count + 1), unread_messages))
@@ -114,7 +113,40 @@ class TelegramRenderer(BaseRenderer):
         return rendered_message
 
     def render_fulltext(self, message, recipients):
-        return 'Rendered fulltext stub'
+        rendered_messages = []
+        for user in recipients:
+            if not user.profile.telegram_uid:
+                continue
+            rendered_messages.append(self.__render_fulltext_single(message, user))
+
+        return rendered_messages
+
+    def __render_fulltext_single(self, message, user):
+        user_profile = user.profile
+        with enable_translation(user_profile):
+            subject = message.title
+            message_text = self.fill_name(message, user)
+            message_text = strip_tags(message_text).replace('&nbsp;', ' ')
+            context = {
+                'message_text': message_text,
+                'subject': subject,
+                'sender': message.sender,
+            }
+            plain_text = render_to_string('tg_fulltext_mail.txt', context)
+            rendered_message = plain_text, user_profile.telegram_uid
+
+        return rendered_message
+
+    @classmethod
+    def fill_name(cls, message, user):
+        if message.variable:
+            t = Template(message.text.replace('%', '&#37;'))
+            c = Context({
+                "last_name": user.last_name,
+                "first_name": user.first_name,
+            })
+            return t.render(c)
+        return message.text
 
 
 class TelegramSender(BaseSender):

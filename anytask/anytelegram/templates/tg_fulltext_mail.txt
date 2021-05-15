@@ -1,0 +1,5 @@
+{% load i18n %}New message
+From: {{ sender.get_full_name }}
+Subject: {{ subject }}
+
+{{ message_text }}

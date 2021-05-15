@@ -205,7 +205,7 @@ class TelegramRendererTests(TestCase):
 
         self.recipient = User.objects.create_user(
             username='recipients', password='recipients')
-        self.recipient.telegram_uid = "463992304"
+        self.recipient.profile.telegram_uid = "463992304"
         self.recipient.first_name = 'RecipientFirstName'
         self.recipient.last_name = 'RecipientLastName'
         self.recipient.save()
@@ -242,3 +242,14 @@ class TelegramRendererTests(TestCase):
                       '''2. SenderFirstName SenderLastName -- _title_second_'''
         self.assertEqual(md_expected, markdown)
         self.assertEqual(self.recipient.profile.telegram_uid, recipient_uid)
+
+    def test_fulltext_one_recipient_simple(self):
+        result = self.renderer.render_fulltext(
+            self.message_first, [self.recipient])
+        plaintext_expected = u'''New message\n''' \
+                             u'''From: SenderFirstName SenderLastName\n''' \
+                             u'''Subject: title_first\n''' \
+                             u'''\n''' \
+                             u'''text_first'''
+        result_expected = [(plaintext_expected, self.recipient.profile.telegram_uid)]
+        self.assertListEqual(result_expected, result)
