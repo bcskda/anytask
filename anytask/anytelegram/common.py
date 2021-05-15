@@ -124,9 +124,10 @@ class TelegramRenderer(BaseRenderer):
     def __render_fulltext_single(self, message, user):
         user_profile = user.profile
         with enable_translation(user_profile):
-            subject = message.title
+            subject = message.title.replace('\n', ' ')
             message_text = self.fill_name(message, user)
-            message_text = strip_tags(message_text).replace('&nbsp;', ' ')
+            message_text = strip_tags(message_text) \
+                .replace('&nbsp;', ' ')
             context = {
                 'message_text': message_text,
                 'subject': subject,

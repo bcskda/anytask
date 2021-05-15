@@ -222,6 +222,14 @@ class TelegramRendererTests(TestCase):
         self.message_second.text = "text_second"
         self.message_second.save()
 
+        self.message_html = Message()
+        self.message_html.sender = self.sender
+        self.message_html.title = u"""<i>HTML</i>-formatted __message__\n""" \
+                                  u"""Second line of subject"""
+        self.message_html.text = "<b>Semi-bold <u>and underscored</u></b> text, <= 1 line />\n" + \
+                                 "Quotes (', \")  and amp & are also fine"
+        self.message_html.save()
+
     def test_notification_one_message(self):
         markdown, recipient_uid = self.renderer.render_notification(
             self.recipient.profile, [self.message_first])
@@ -251,5 +259,17 @@ class TelegramRendererTests(TestCase):
                              u'''Subject: title_first\n''' \
                              u'''\n''' \
                              u'''text_first'''
+        result_expected = [(plaintext_expected, self.recipient.profile.telegram_uid)]
+        self.assertListEqual(result_expected, result)
+
+    def test_fulltext_one_recipient_html(self):
+        result = self.renderer.render_fulltext(
+            self.message_html, [self.recipient])
+        plaintext_expected = u'''New message\n''' \
+                             u'''From: SenderFirstName SenderLastName\n''' \
+                             u'''Subject: <i>HTML</i>-formatted __message__ Second line of subject\n''' \
+                             u'''\n''' \
+                             u'''Semi-bold and underscored text, <= 1 line />\n''' \
+                             u'''Quotes (', \")  and amp & are also fine'''
         result_expected = [(plaintext_expected, self.recipient.profile.telegram_uid)]
         self.assertListEqual(result_expected, result)

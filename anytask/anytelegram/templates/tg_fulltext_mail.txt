@@ -1,5 +1,5 @@
 {% load i18n %}New message
 From: {{ sender.get_full_name }}
-Subject: {{ subject }}
+Subject: {{ subject|safe }}
 
-{{ message_text }}
+{{ message_text|safe }}
