@@ -141,11 +141,7 @@ class AnyTelegramTests(TestCase):
                 u'text': u'Visit your profile to get the secret, then call /link <secret>'
             })
         ]
-        trapped = []
-        while not self.api_server.trapped_requests.empty():
-            trapped.append(self.api_server.trapped_requests.get())
-        self.assertIsNone(result)
-        self.assertListEqual(expected_trapped, trapped)
+        self.assertTrappedCalls(expected_trapped)
 
     def test_link_valid(self):
         self.first_student.profile.telegram_link_secret = uuid.UUID('53cd4396-8b96-45a7-a123-11f1107b56c7')
@@ -161,11 +157,7 @@ class AnyTelegramTests(TestCase):
                 u'text': u'Success!'
             })
         ]
-        trapped = []
-        while not self.api_server.trapped_requests.empty():
-            trapped.append(self.api_server.trapped_requests.get())
-        self.assertIsNone(result)
-        self.assertListEqual(expected_trapped, trapped)
+        self.assertTrappedCalls(expected_trapped)
 
     def test_link_invalid(self):
         update = get_mock_update('link_invalid')
@@ -178,11 +170,13 @@ class AnyTelegramTests(TestCase):
                 u'text': u'Invalid secret'
             })
         ]
+        self.assertTrappedCalls(expected_trapped)
+
+    def assertTrappedCalls(self, expected):
         trapped = []
         while not self.api_server.trapped_requests.empty():
             trapped.append(self.api_server.trapped_requests.get())
-        self.assertIsNone(result)
-        self.assertListEqual(expected_trapped, trapped)
+        self.assertListEqual(expected, trapped)
 
 
 class TelegramRendererTests(TestCase):
