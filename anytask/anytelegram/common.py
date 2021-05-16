@@ -164,7 +164,7 @@ class TelegramSender(BaseSender):
         n_sent = 0
         for plain_text, telegram_uid in prepared_messages:
             try:
-                sent_msg = self.api.get_bot().send_message(
+                self.api.get_bot().send_message(
                     telegram_uid, plain_text
                 )
                 n_sent += 1

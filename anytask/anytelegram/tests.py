@@ -132,7 +132,7 @@ class AnyTelegramTests(TestCase):
 
     def test_reply_start(self):
         update = get_mock_update('bcskda_start')
-        result = self.api_client.process_update(json.dumps(update))
+        self.api_client.process_update(json.dumps(update))
         expected_trapped = [
             ('getMe', dict()),
             ('sendMessage', {
@@ -148,7 +148,7 @@ class AnyTelegramTests(TestCase):
         self.first_student.profile.save()
 
         update = get_mock_update('link_valid')
-        result = self.api_client.process_update(json.dumps(update))
+        self.api_client.process_update(json.dumps(update))
         expected_trapped = [
             ('getMe', dict()),
             ('sendMessage', {
@@ -161,7 +161,7 @@ class AnyTelegramTests(TestCase):
 
     def test_link_invalid(self):
         update = get_mock_update('link_invalid')
-        result = self.api_client.process_update(json.dumps(update))
+        self.api_client.process_update(json.dumps(update))
         expected_trapped = [
             ('getMe', dict()),
             ('sendMessage', {
