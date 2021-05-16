@@ -3,9 +3,8 @@ import SocketServer
 import json
 import random
 import re
-import threading
 import uuid
-from Queue import Queue
+from multiprocessing import Queue, Process
 
 from django.test import TestCase
 
@@ -15,9 +14,9 @@ from common import AnyTelegram, TelegramRenderer
 from test_data import get_mock_update
 
 
-class TelegramApiServerMock(threading.Thread):
+class TelegramApiServerMock(Process):
     LISTEN_ADDR = '127.0.0.1'
-    LISTEN_PORT = 29668
+    LISTEN_PORT = 29668 + random.randint(0, 200)
 
     class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
         def api_get_me(self):
@@ -85,23 +84,21 @@ class TelegramApiServerMock(threading.Thread):
                 self.end_headers()
 
     def __init__(self):
-        super(TelegramApiServerMock, self).__init__()
+        super(TelegramApiServerMock, self).__init__(target=self.main)
+        self.daemon = True
         self.server = None
         self.trapped_requests = Queue()
 
     def get_base_url(self):
         return 'http://{}:{}/'.format(self.LISTEN_ADDR, self.LISTEN_PORT)
 
-    def run(self):
+    def main(self):
         server_address = (self.LISTEN_ADDR, self.LISTEN_PORT)
         self.server = SocketServer.TCPServer(server_address, self.Handler)
         self.server.allow_reuse_address = True
         self.server.submit_error = False
         self.server.trapped_requests = self.trapped_requests
         self.server.serve_forever()
-
-    def stop(self):
-        self.server.shutdown()
 
 
 class AnyTelegramTests(TestCase):
@@ -112,11 +109,6 @@ class AnyTelegramTests(TestCase):
         super(AnyTelegramTests, cls).setUpClass()
         cls.api_server = TelegramApiServerMock()
         cls.api_server.start()
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.api_server.stop()
-        super(AnyTelegramTests, cls).tearDownClass()
 
     def setUp(self):
         super(AnyTelegramTests, self).setUpClass()
