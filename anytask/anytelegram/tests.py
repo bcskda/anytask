@@ -10,7 +10,7 @@ from django.test import TestCase
 
 from mail.models import Message
 from users.models import User
-from common import AnyTelegram, TelegramRenderer
+from common import AnyTelegram, TelegramRenderer, TelegramSender
 from test_data import get_mock_update
 
 
@@ -259,3 +259,43 @@ class TelegramRendererTests(TestCase):
                              u'''Quotes (', \")  and amp & are also fine'''
         result_expected = [(plaintext_expected, self.recipient.profile.telegram_uid)]
         self.assertListEqual(result_expected, result)
+
+
+class TelegramSenderTests(TestCase):
+    api_server = None
+
+    @classmethod
+    def setUpClass(cls):
+        super(TelegramSenderTests, cls).setUpClass()
+        cls.api_server = TelegramApiServerMock()
+        cls.api_server.start()
+
+    def setUp(self):
+        super(TelegramSenderTests, self).setUpClass()
+
+        self.api_client = AnyTelegram(base_url=self.api_server.get_base_url())
+        self.sender = TelegramSender(self.api_client)
+
+        self.message_first = ('first_plain_text_message', 8664)
+        self.message_second = ('second_plain_text_message', 390)
+        self.message_html = ('plain_from_html_message', 51107)
+
+    def test_notification(self):
+        n_sent = self.sender.mass_send([self.message_first])
+        self.assertEqual(1, n_sent)
+
+        expected_trapped = [
+            ('getMe', dict()),
+            ('sendMessage', {
+                u'chat_id': u'8664',
+                u'disable_notification': u'False',
+                u'text': u'first_plain_text_message'
+            })
+        ]
+        self.assertTrappedCalls(expected_trapped)
+
+    def assertTrappedCalls(self, expected):
+        trapped = []
+        while not self.api_server.trapped_requests.empty():
+            trapped.append(self.api_server.trapped_requests.get())
+        self.assertListEqual(expected, trapped)
