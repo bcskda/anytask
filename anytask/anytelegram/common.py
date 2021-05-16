@@ -151,6 +151,23 @@ class TelegramRenderer(BaseRenderer):
 
 
 class TelegramSender(BaseSender):
+    """Not thread-safe: instance must be used from single thread"""
+    def __init__(self, api=None):
+        """
+        Args:
+            api: AnyTelegram instance (optional)
+        """
+        BaseSender.__init__(self)
+        self.api = api or AnyTelegram()
+
     def mass_send(self, prepared_messages):
-        logger.info('TelegramSender.mass_send stub:', prepared_messages)
-        return 0
+        n_sent = 0
+        for plain_text, telegram_uid in prepared_messages:
+            try:
+                sent_msg = self.api.get_bot().send_message(
+                    telegram_uid, plain_text
+                )
+                n_sent += 1
+            except Exception as e:
+                logger.exception("Exception during TelegramSender.mass_send", exc_info=e)
+        return n_sent
